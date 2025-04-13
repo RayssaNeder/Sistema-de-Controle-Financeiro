@@ -1,67 +1,105 @@
-#  XPTO - Sistema de Controle Financeiro
+# XPTO - Sistema de Controle Financeiro
 
-Sistema desenvolvido para a empresa XPTO com o objetivo de gerenciar receitas e despesas de clientes (PF e PJ), suas contas bancárias e movimentações financeiras. O projeto inclui funcionalidades de CRUD, geração de relatórios e integração com banco de dados Oracle.
+## Descrição
+Sistema desenvolvido para gerenciamento financeiro de clientes (Pessoa Física e Jurídica), incluindo:
+- Cadastro de clientes e contas bancárias
+- Registro de movimentações financeiras
+- Cálculo automático de receitas
+- Geração de relatórios analíticos
 
-##  Descrição do Projeto
+## Funcionalidades
+✅ CRUD completo de clientes, contas e movimentações  
+✅ Cálculo automático de receitas  
+✅ Geração de relatórios em formato .txt  
+✅ API documentada com Swagger  
+✅ Testes automatizados com JUnit  
 
-A aplicação permite:
+## Tecnologias
+| Categoria       | Tecnologias                          |
+|-----------------|--------------------------------------|
+| Backend         | Java 17, Spring Boot, Spring Data JPA|
+| Banco de Dados  | Oracle (produção), H2 (testes)       |
+| Ferramentas     | Gradle, Swagger, Docker               |
 
-- Cadastro e manutenção de clientes (Pessoa Física e Jurídica)
-- Gerenciamento de contas bancárias associadas aos clientes
-- Registro de movimentações financeiras (crédito e débito)
-- Cálculo da receita da empresa XPTO com base nas movimentações dos clientes
-- Geração de relatórios:
-  - Saldo do cliente
-  - Saldo do cliente por período
-  - Saldo geral de todos os clientes
-  - Receita da empresa por período
+## Configuração
 
-## Tecnologias Utilizadas
+### Pré-requisitos
+- Java 17+
+- Oracle Database ou Docker (para ambiente de produção)
+- Gradle
+###  Banco de Dados
 
-- Java 17
-- Spring Boot
-- Spring Data JPA
-- Oracle Database
-- Maven
-- Swagger/OpenAPI
-- JUnit para testes
-- PL/SQL (procedures, triggers ou functions)
+O projeto utiliza duas configurações distintas de banco de dados, conforme o ambiente:
 
-##  Estrutura do Projeto
+####  Testes: H2 (em memória)
 
-- `com.xpto.demo.controller`: Controllers REST
-- `com.xpto.demo.dto`: Data Transfer Objects
-- `com.xpto.demo.service`: Regras de negócio
-- `com.xpto.demo.repository`: Interfaces de acesso a dados
-- `com.xpto.demo.swagger`: Documentação da API
-- `com.xpto.demo.model`: Entidades JPA
+Durante a execução dos testes, é utilizado o banco **H2**, configurado automaticamente por meio do profile `test`.  
+Essa abordagem elimina a necessidade de uma instância Oracle local apenas para rodar os testes automatizados.
 
-##  Como Executar o Projeto
+---
 
+#### Execução da Aplicação: Oracle
+
+Para executar a aplicação em ambiente de desenvolvimento, homologação ou produção, é necessário utilizar um banco de dados **Oracle**.
+
+As credenciais e parâmetros de conexão devem ser definidos no arquivo `application.properties` caso queira apontar para uma instância do oracle local.
+Mas tambem pode ser obtida uma instancia via container Docker. Para isso existe um arquivo em src/main/resources/docker-compose.yaml que sobe um container Docker do Oracle já configurada
+
+### Instalação
 1. Clone o repositório:
-   ```bash
-   git clone https://github.com/seu-usuario/xpto-financeiro.git
+```bash
+git clone https://github.com/seu-usuario/xpto-financeiro.git
+```
 
-2. Configure o banco de dados Oracle e atualize as credenciais no `application.properties`.
+2. Configure o banco de dados (Oracle):
+ Configurando credencias do banco Orable local no application.properties OU rodando container Docker via comando
+ ```bash
+docker-compose up
+```
+ou
 
+```bash
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521/XEPDB1
+spring.datasource.username=app
+spring.datasource.password=app
+```
 3. Build a aplicação:
-	`./gradlew clean build --refresh-dependencies `
+```bash
+./gradlew clean build --refresh-dependencies 
+```
 4. Execute a aplicação:
-		`./gradlew bootRun `
-5. Execute a procedure prc_integracao_dados.sql para realizar a inegração dos clientes na base de dados ou adicionar manualmente via metodos de crud de cliente, endereço, conta e movimentacao
+```bash
+./gradlew bootRun 
+```
 
-6. Acesse a documentação  Swagger da API em:
- `http://localhost:8080/swagger-ui/index.html#/`
-  
+5. Execute a procedure
+   Essa procedure é responsável por fazer a integracao de clientes já configurados com conta e movimentaçoes. Mas a inclusão desses dados tbm pode ser feito via REST chamando os respectivos endpoints de CRUD de cliente, conta, endereco e movimentacao.
+```bash
+prc_integracao_dados.sql
+```
+
+6. Acesse a documentação #Swagger# da API em:
+   O projeto conta com uma documentação detalhada de todos os endpoints disponíveis, seus parâmetros esperados e respectivos retornos na documentação OpenApi/Swagger que pode ser acessada via:
+```bash
+http://localhost:8080/swagger-ui/index.html#/
+ ```
  ##  Relatórios
- 
- Os relatórios são gerados em formato .txt e podem ser acessados via endpoints específicos. 
+ Além dos endpois de CRUD REST, também temos os endpoints responsáveis por gerar relatórios pertientes.
+ Os relatórios são gerados em formato .txt e podem ser acessados via endpoints específicos. Ex:
  
  1 - Relatorio desaldo do cliente:
- `http://localhost:8080/relatorio/saldo-cliente/txt?uuidCliente={uuidCLiente}`
- 2 - Relatório de saldo de cliente por periodo
- `http://localhost:8080/relatorio/saldo-cliente-por-periodo/txt?uuidCliente={uuidCliente}&dataInicio=2025-04-01&dataFim=2025-05-12`
+ ```bash
+ 	http://localhost:8080/relatorio/saldo-cliente/txt?uuidCliente={uuidCLiente}
+ ```
+ 2 - Relatório de saldo de cliente por periodo:
+```bash
+     http://localhost:8080/relatorio/saldo-cliente-por-periodo/txt?uuidCliente={uuidCliente}&dataInicio=2025-04-01&dataFim=2025-05-12
+```
  3 - Relatório de receitas:
- `http://localhost:8080/relatorio/receitas/txt?dataInicio=2025-04-12&dataFim=2025-05-12`
- 4 - Relatóriode Salfo Geral:
- `http://localhost:8080/relatorio/saldo-geral/txt`
+ ```bash
+ 	http://localhost:8080/relatorio/receitas/txt?dataInicio=2025-04-12&dataFim=2025-05-12
+ ```
+ 4 - Relatóriode Saldo Geral:
+ ```bash
+ 	http://localhost:8080/relatorio/saldo-geral/txt
+ ```
