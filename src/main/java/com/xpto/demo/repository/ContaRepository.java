@@ -9,16 +9,14 @@ import org.springframework.stereotype.Repository;
 import com.xpto.demo.entity.ContaDomainEntity;
 import com.xpto.demo.service.exception.UnimplementedMethodException;
 
-
 @Repository
 public interface ContaRepository extends JpaRepository<ContaDomainEntity, UUID> {
 
-  
-  default Optional<ContaDomainEntity> findById(Long id) {
-    throw new UnimplementedMethodException("Método não implementado.");
-  }
+	default Optional<ContaDomainEntity> findById(Long id) {
+		throw new UnimplementedMethodException("Método não implementado.");
+	}
 
-  void deleteByUuid(UUID uuid);
+	void deleteByUuid(UUID uuid);
 
-  Optional<ContaDomainEntity> findByUuid(UUID uuid);
+	Optional<ContaDomainEntity> findByUuid(UUID uuid);
 }

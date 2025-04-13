@@ -1,6 +1,5 @@
 package com.xpto.demo.service;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -38,114 +37,113 @@ import com.xpto.demo.service.utils.CreateUtils;
 
 public class ClienteServiceImplTest {
 
-    @Mock
-    private ClienteRepository clienteRepository;
+	@Mock
+	private ClienteRepository clienteRepository;
 
-    @Mock
-    private ClienteMapper clienteMapper;
+	@Mock
+	private ClienteMapper clienteMapper;
 
-    @Mock
-    private MovimentacaoService movimentacaoService;
+	@Mock
+	private MovimentacaoService movimentacaoService;
 
-    @Mock
-    private ContaService contaService;
+	@Mock
+	private ContaService contaService;
 
-    @InjectMocks
-    private ClienteServiceImpl clienteService;
+	@InjectMocks
+	private ClienteServiceImpl clienteService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	void setUp() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @Test
-    void testCreateClientePessoaFisica() {
-        CreateClientePessoaFisicaDTO dto = CreateUtils.createCreateClientePessoaFIsicaDTO();
-        ClientePessoaFisicaDomainEntity clientePessoaFisicaDomainEntity = CreateUtils.createClientePessoaFisicaEntity();
-        Cliente cliente = CreateUtils.criarClientePessoaFisica();
-        ContaDomainEntity contaDomainEntity = CreateUtils.criarContaDomainEntity();
-        MovimentacaoDTO movimentacaoDTO = CreateUtils.criarMovimentacaoDTO();
-                
-        when(clienteMapper.toEntity(eq(dto))).thenReturn(clientePessoaFisicaDomainEntity);
-        when(clienteRepository.save(any())).thenReturn(clientePessoaFisicaDomainEntity);
-        when(contaService.createContaInicial(eq(clientePessoaFisicaDomainEntity), eq(dto.getAgencia()))).thenReturn(contaDomainEntity);
-        when(movimentacaoService.createMovimentacaoInicial(eq(contaDomainEntity))).thenReturn(movimentacaoDTO);
-        when(clienteMapper.toModel((ClienteDomainEntity) any())).thenReturn(cliente);
+	@Test
+	void testCreateClientePessoaFisica() {
+		CreateClientePessoaFisicaDTO dto = CreateUtils.createCreateClientePessoaFIsicaDTO();
+		ClientePessoaFisicaDomainEntity clientePessoaFisicaDomainEntity = CreateUtils.createClientePessoaFisicaEntity();
+		Cliente cliente = CreateUtils.criarClientePessoaFisica();
+		ContaDomainEntity contaDomainEntity = CreateUtils.criarContaDomainEntity();
+		MovimentacaoDTO movimentacaoDTO = CreateUtils.criarMovimentacaoDTO();
 
-        Cliente result = clienteService.create(dto);
+		when(clienteMapper.toEntity(eq(dto))).thenReturn(clientePessoaFisicaDomainEntity);
+		when(clienteRepository.save(any())).thenReturn(clientePessoaFisicaDomainEntity);
+		when(contaService.createContaInicial(eq(clientePessoaFisicaDomainEntity), eq(dto.getAgencia())))
+				.thenReturn(contaDomainEntity);
+		when(movimentacaoService.createMovimentacaoInicial(eq(contaDomainEntity))).thenReturn(movimentacaoDTO);
+		when(clienteMapper.toModel((ClienteDomainEntity) any())).thenReturn(cliente);
 
-        assertEquals(clientePessoaFisicaDomainEntity.getNome(), result.getNome());
-        verify(clienteRepository, times(1)).save(any(ClienteDomainEntity.class));
-        verify(contaService, times(1)).createContaInicial(any(), eq(dto.getAgencia()));
-        verify(movimentacaoService, times(1)).createMovimentacaoInicial(any());
-    }
-    
-    @Test
-    void testReadClientePessoaFisica() {
-        ClientePessoaFisicaDomainEntity entity = CreateUtils.createClientePessoaFisicaEntity();
-        Cliente cliente = CreateUtils.criarClientePessoaFisica();
+		Cliente result = clienteService.create(dto);
 
-        when(clienteRepository.findByUuid(eq(entity.getUuid()))).thenReturn(Optional.of(entity));
-        when(clienteMapper.toModel(eq(entity))).thenReturn(cliente);
+		assertEquals(clientePessoaFisicaDomainEntity.getNome(), result.getNome());
+		verify(clienteRepository, times(1)).save(any(ClienteDomainEntity.class));
+		verify(contaService, times(1)).createContaInicial(any(), eq(dto.getAgencia()));
+		verify(movimentacaoService, times(1)).createMovimentacaoInicial(any());
+	}
 
-        Cliente result = clienteService.read(entity.getUuid());
+	@Test
+	void testReadClientePessoaFisica() {
+		ClientePessoaFisicaDomainEntity entity = CreateUtils.createClientePessoaFisicaEntity();
+		Cliente cliente = CreateUtils.criarClientePessoaFisica();
 
-        assertNotNull(result);
-        assertEquals(cliente.getNome(), result.getNome());
-        verify(clienteRepository).findByUuid(entity.getUuid());
-    }
-    
-    @Test
-    void testUpdateClientePessoaFisica() {
-        UUID uuid = UUID.randomUUID();
-        ClientePessoaFisicaDomainEntity entity = CreateUtils.createClientePessoaFisicaEntity();
-        UpdateCliente updateCliente = CreateUtils.createUpdateCliente();
-        Cliente clienteAtualizado = CreateUtils.criarClientePessoaFisica();
+		when(clienteRepository.findByUuid(eq(entity.getUuid()))).thenReturn(Optional.of(entity));
+		when(clienteMapper.toModel(eq(entity))).thenReturn(cliente);
 
-        when(clienteRepository.findByUuid(uuid)).thenReturn(Optional.of(entity));
-        doNothing().when(clienteMapper).intoEntity(updateCliente, entity);
-        when(clienteMapper.toModel(entity)).thenReturn(clienteAtualizado);
+		Cliente result = clienteService.read(entity.getUuid());
 
-        Cliente result = clienteService.update(uuid, updateCliente);
+		assertNotNull(result);
+		assertEquals(cliente.getNome(), result.getNome());
+		verify(clienteRepository).findByUuid(entity.getUuid());
+	}
 
-        assertNotNull(result);
-        assertEquals(clienteAtualizado.getNome(), result.getNome());
-        verify(clienteRepository).flush();
-    }
-    
-    @Test
-    void testDeleteCliente() {
-        ClientePessoaFisicaDomainEntity entity = CreateUtils.createClientePessoaFisicaEntity();
+	@Test
+	void testUpdateClientePessoaFisica() {
+		UUID uuid = UUID.randomUUID();
+		ClientePessoaFisicaDomainEntity entity = CreateUtils.createClientePessoaFisicaEntity();
+		UpdateCliente updateCliente = CreateUtils.createUpdateCliente();
+		Cliente clienteAtualizado = CreateUtils.criarClientePessoaFisica();
 
-        when(clienteRepository.findByUuid(entity.getUuid())).thenReturn(Optional.of(entity));
-        when(clienteRepository.save(any())).thenReturn(entity);
+		when(clienteRepository.findByUuid(uuid)).thenReturn(Optional.of(entity));
+		doNothing().when(clienteMapper).intoEntity(updateCliente, entity);
+		when(clienteMapper.toModel(entity)).thenReturn(clienteAtualizado);
 
-        clienteService.delete(entity.getUuid());
+		Cliente result = clienteService.update(uuid, updateCliente);
 
-        verify(clienteRepository).save(entity);
-    }
-    
-    @Test
-    void testListClientes() {
-        List<ClienteDomainEntity> entities = List.of(CreateUtils.createClientePessoaFisicaEntity());
-        Page<ClienteDomainEntity> page = new PageImpl<>(entities);
-        Cliente cliente = CreateUtils.criarClientePessoaFisica();
-        Page<Cliente> pageCliente = new PageImpl<>(List.of(cliente));
+		assertNotNull(result);
+		assertEquals(clienteAtualizado.getNome(), result.getNome());
+		verify(clienteRepository).flush();
+	}
 
-        PageCliente pageClienteMock = mock(PageCliente.class);
-        when(pageClienteMock.getTotalElements()).thenReturn(1L);
+	@Test
+	void testDeleteCliente() {
+		ClientePessoaFisicaDomainEntity entity = CreateUtils.createClientePessoaFisicaEntity();
 
-        when(clienteRepository.findAll(any(Pageable.class))).thenReturn(page);
-        when(clienteMapper.toModel(any(ClienteDomainEntity.class))).thenReturn(cliente);
-        when(clienteMapper.toPageModel(any(Page.class))).thenReturn(pageClienteMock);
+		when(clienteRepository.findByUuid(entity.getUuid())).thenReturn(Optional.of(entity));
+		when(clienteRepository.save(any())).thenReturn(entity);
 
-        PageCliente result = clienteService.list(0, 10, List.of());
+		clienteService.delete(entity.getUuid());
 
-        assertNotNull(result);
-        assertEquals(1L, result.getTotalElements());
-        verify(clienteRepository).findAll(any(Pageable.class));
-    }
+		verify(clienteRepository).save(entity);
+	}
 
+	@Test
+	void testListClientes() {
+		List<ClienteDomainEntity> entities = List.of(CreateUtils.createClientePessoaFisicaEntity());
+		Page<ClienteDomainEntity> page = new PageImpl<>(entities);
+		Cliente cliente = CreateUtils.criarClientePessoaFisica();
+		Page<Cliente> pageCliente = new PageImpl<>(List.of(cliente));
 
+		PageCliente pageClienteMock = mock(PageCliente.class);
+		when(pageClienteMock.getTotalElements()).thenReturn(1L);
+
+		when(clienteRepository.findAll(any(Pageable.class))).thenReturn(page);
+		when(clienteMapper.toModel(any(ClienteDomainEntity.class))).thenReturn(cliente);
+		when(clienteMapper.toPageModel(any(Page.class))).thenReturn(pageClienteMock);
+
+		PageCliente result = clienteService.list(0, 10, List.of());
+
+		assertNotNull(result);
+		assertEquals(1L, result.getTotalElements());
+		verify(clienteRepository).findAll(any(Pageable.class));
+	}
 
 }

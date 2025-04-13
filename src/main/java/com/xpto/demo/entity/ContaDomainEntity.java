@@ -32,15 +32,14 @@ public class ContaDomainEntity {
 	@Column(nullable = false, unique = true, updatable = false)
 	private UUID uuid;
 
-
 	private String agencia;
 
 	private String numero;
 
 	private Boolean ativa = true;
-	
-	 @Column(name = "data_exclusao")
-	    private LocalDate dataExclusao;
+
+	@Column(name = "data_exclusao")
+	private LocalDate dataExclusao;
 
 	@ManyToOne
 	@JoinColumn(name = "cliente_id", nullable = false)
@@ -48,19 +47,17 @@ public class ContaDomainEntity {
 
 	@OneToMany(mappedBy = "conta", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<MovimentacaoDomainEntity> movimentacoes = new ArrayList<>();
-	
-	
-	
-	 public void excluir() {
-	        this.ativa = false; 
-	        this.dataExclusao = LocalDate.now(); 
-	    }
+
+	public void excluir() {
+		this.ativa = false;
+		this.dataExclusao = LocalDate.now();
+	}
 
 	@PrePersist
 	private void initializeUUID() {
-	    if (uuid == null) {
-	        uuid = UUID.randomUUID();
-	    }
+		if (uuid == null) {
+			uuid = UUID.randomUUID();
+		}
 	}
 
 }

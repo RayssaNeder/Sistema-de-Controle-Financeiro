@@ -6,10 +6,10 @@ import lombok.Data;
 
 @Data
 public class UpdateConta {
-	
+
 	private String agencia;
-    private String numero;
-    private Boolean ativa;
-    private UUID uuidCliente; 
+	private String numero;
+	private Boolean ativa;
+	private UUID uuidCliente;
 
 }

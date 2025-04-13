@@ -10,45 +10,41 @@ import com.xpto.demo.dto.EnderecoDTO;
 import com.xpto.demo.dto.PageEnderecoDTO;
 import com.xpto.demo.entity.EnderecoDomainEntity;
 
-
-
 @Component
 public class EnderecoMapper {
 
-	  private final ModelMapper modelMapper;
+	private final ModelMapper modelMapper;
 
-	  public EnderecoMapper(ModelMapper modelMapper) {
-		    this.modelMapper = modelMapper;
-		  }
-	  
-  public EnderecoDTO toModel(EnderecoDomainEntity entity) {
-    return modelMapper.map(entity, EnderecoDTO.class);
-  }
+	public EnderecoMapper(ModelMapper modelMapper) {
+		this.modelMapper = modelMapper;
+	}
 
-  public EnderecoDomainEntity toEntity(CreateEndereco createEndereco) {
-    ModelMapper modelMapper = new ModelMapper();
+	public EnderecoDTO toModel(EnderecoDomainEntity entity) {
+		return modelMapper.map(entity, EnderecoDTO.class);
+	}
 
-    PropertyMap<CreateEndereco, EnderecoDomainEntity> enderecoEntityMap =
-        new PropertyMap<CreateEndereco, EnderecoDomainEntity>() {
-          protected void configure() {
-            skip(destination.getId());
-            skip(destination.getUuid());
-            skip(destination.getCliente());
-          }
-        };
-    modelMapper.addMappings(enderecoEntityMap);
+	public EnderecoDomainEntity toEntity(CreateEndereco createEndereco) {
+		ModelMapper modelMapper = new ModelMapper();
 
-    return modelMapper.map(createEndereco, EnderecoDomainEntity.class);
-  }
+		PropertyMap<CreateEndereco, EnderecoDomainEntity> enderecoEntityMap = new PropertyMap<CreateEndereco, EnderecoDomainEntity>() {
+			protected void configure() {
+				skip(destination.getId());
+				skip(destination.getUuid());
+				skip(destination.getCliente());
+			}
+		};
+		modelMapper.addMappings(enderecoEntityMap);
 
+		return modelMapper.map(createEndereco, EnderecoDomainEntity.class);
+	}
 
-  public PageEnderecoDTO toPageModel(Page<EnderecoDTO> page) {
-    PageEnderecoDTO pageEndereco = new PageEnderecoDTO();
-    pageEndereco.setPage(page.getNumber());
-    pageEndereco.setSize(page.getSize());
-    pageEndereco.setTotalElements(page.getTotalElements());
-    pageEndereco.setTotalPages(page.getTotalPages());
-    pageEndereco.setResults(page.getContent());
-    return pageEndereco;
-  }
+	public PageEnderecoDTO toPageModel(Page<EnderecoDTO> page) {
+		PageEnderecoDTO pageEndereco = new PageEnderecoDTO();
+		pageEndereco.setPage(page.getNumber());
+		pageEndereco.setSize(page.getSize());
+		pageEndereco.setTotalElements(page.getTotalElements());
+		pageEndereco.setTotalPages(page.getTotalPages());
+		pageEndereco.setResults(page.getContent());
+		return pageEndereco;
+	}
 }

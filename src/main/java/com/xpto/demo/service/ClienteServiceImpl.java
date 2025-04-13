@@ -49,8 +49,7 @@ public class ClienteServiceImpl implements ClienteService {
 
 		if (createCliente instanceof CreateClientePessoaFisicaDTO dto) {
 			clienteEntity = clienteMapper.toEntity(dto);
-		}
-		else if (createCliente instanceof CreateClientePessoaJuridicaDTO dto) {
+		} else if (createCliente instanceof CreateClientePessoaJuridicaDTO dto) {
 			clienteEntity = clienteMapper.toEntity(dto);
 
 		}

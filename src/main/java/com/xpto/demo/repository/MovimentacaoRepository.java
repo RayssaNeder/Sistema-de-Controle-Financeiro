@@ -10,10 +10,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.xpto.demo.dto.MovivemtosByClienteDTO;
-import com.xpto.demo.dto.RelatorioSaldoClienteDTO;
 import com.xpto.demo.entity.MovimentacaoDomainEntity;
 import com.xpto.demo.service.exception.UnimplementedMethodException;
-
 
 @Repository
 public interface MovimentacaoRepository extends JpaRepository<MovimentacaoDomainEntity, UUID> {
@@ -26,25 +24,12 @@ public interface MovimentacaoRepository extends JpaRepository<MovimentacaoDomain
 
 	Optional<MovimentacaoDomainEntity> findByUuid(UUID uuid);
 
-	@Query("SELECT new com.xpto.demo.dto.MovivemtosByClienteDTO(" 
-			
-			+ " m.data, " 
-			+ "c.uuid, "
-			+ "	 m.tipo, " 
-			+ "	 m.valor, "
-			+ "	 m.descricao, " 
-			+ "cl.uuid, "
-			+ "	cl.nome , " 
-			+ "	cl.email , " 
-			+ "	cl.telefone , " 
-			+ "	 c.agencia , "
-			+ "	 c.numero , " 
-			+ "	 c.ativa) " 
-			+ "FROM MovimentacaoDomainEntity m "
-			+ "JOIN ContaDomainEntity c ON c.id = m.conta.id " 
-			+ "JOIN ClienteDomainEntity cl ON cl.id = c.cliente.id "
-			+ "WHERE  cl.uuid = :uuidCliente")
+	@Query("SELECT new com.xpto.demo.dto.MovivemtosByClienteDTO("
+
+			+ " m.data, " + "c.uuid, " + "	 m.tipo, " + "	 m.valor, " + "	 m.descricao, " + "cl.uuid, "
+			+ "	cl.nome , " + "	cl.email , " + "	cl.telefone , " + "	 c.agencia , " + "	 c.numero , "
+			+ "	 c.ativa) " + "FROM MovimentacaoDomainEntity m " + "JOIN ContaDomainEntity c ON c.id = m.conta.id "
+			+ "JOIN ClienteDomainEntity cl ON cl.id = c.cliente.id " + "WHERE  cl.uuid = :uuidCliente")
 	List<MovivemtosByClienteDTO> findAllMovimentacaoByCliente(@Param("uuidCliente") UUID uuidCliente);
 
-	
 }

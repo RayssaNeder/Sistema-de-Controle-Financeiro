@@ -4,8 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class CreateClientePessoaJuridicaDTO extends CreateCliente {
-	 private String cnpj;
-	    private String razaoSocial;
+	private String cnpj;
+	private String razaoSocial;
 }

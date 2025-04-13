@@ -9,9 +9,9 @@ import lombok.Data;
 
 @Data
 public class CreateMovimentacaoDTO {
-	    private UUID uuidConta;
-	    private BigDecimal valor;
-	    private String descricao;
-	    private TipoMovimentacao tipo;
+	private UUID uuidConta;
+	private BigDecimal valor;
+	private String descricao;
+	private TipoMovimentacao tipo;
 
 }

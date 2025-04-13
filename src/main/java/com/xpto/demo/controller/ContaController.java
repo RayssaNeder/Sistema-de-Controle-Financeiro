@@ -23,43 +23,40 @@ import com.xpto.demo.dto.UpdateConta;
 import com.xpto.demo.service.ContaService;
 import com.xpto.demo.swagger.ContaApi;
 
-
 @RestController
 @RequestMapping("/conta")
 public class ContaController implements ContaApi {
 	private final ContaService contaService;
 
-	  public ContaController(ContaService contaService) {
-	    this.contaService = contaService;
-	  }
-
-	  @PostMapping("/novo")
-	  @ResponseStatus(HttpStatus.CREATED)
-	  public ResponseEntity<ContaDTO> createConta(@RequestBody CreateContaDTO createconta) {
-	    return new ResponseEntity<>(contaService.create(createconta), HttpStatus.CREATED);
-	  }
-
-	  @GetMapping("/{uuid}")
-	  public ResponseEntity<ContaDTO> readConta(@PathVariable UUID uuid) {
-	    return new ResponseEntity<>(contaService.read(uuid), HttpStatus.OK);
-	  }
-
-	  @PutMapping("/{uuid}")
-	  public ResponseEntity<ContaDTO> updateConta(@PathVariable UUID uuid, @RequestBody UpdateConta updateconta) {
-	    return new ResponseEntity<>(contaService.update(uuid, updateconta), HttpStatus.OK);
-	  }
-
-	  @DeleteMapping("/{uuid}")
-	  public ResponseEntity<Void> deleteConta(@PathVariable UUID uuid) {
-	    contaService.delete(uuid);
-	    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	  }
-
-	    @GetMapping
-	  public ResponseEntity<PageConta> listConta(
-			  @RequestParam(defaultValue = "0") Integer page,
-			    @RequestParam(defaultValue = "10") Integer size,
-			    @RequestParam(required = false) List<String> sort) {
-	    return new ResponseEntity<>(contaService.list(page, size, sort), HttpStatus.OK);
-	  }
+	public ContaController(ContaService contaService) {
+		this.contaService = contaService;
 	}
+
+	@PostMapping("/novo")
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<ContaDTO> createConta(@RequestBody CreateContaDTO createconta) {
+		return new ResponseEntity<>(contaService.create(createconta), HttpStatus.CREATED);
+	}
+
+	@GetMapping("/{uuid}")
+	public ResponseEntity<ContaDTO> readConta(@PathVariable UUID uuid) {
+		return new ResponseEntity<>(contaService.read(uuid), HttpStatus.OK);
+	}
+
+	@PutMapping("/{uuid}")
+	public ResponseEntity<ContaDTO> updateConta(@PathVariable UUID uuid, @RequestBody UpdateConta updateconta) {
+		return new ResponseEntity<>(contaService.update(uuid, updateconta), HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{uuid}")
+	public ResponseEntity<Void> deleteConta(@PathVariable UUID uuid) {
+		contaService.delete(uuid);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@GetMapping
+	public ResponseEntity<PageConta> listConta(@RequestParam(defaultValue = "0") Integer page,
+			@RequestParam(defaultValue = "10") Integer size, @RequestParam(required = false) List<String> sort) {
+		return new ResponseEntity<>(contaService.list(page, size, sort), HttpStatus.OK);
+	}
+}

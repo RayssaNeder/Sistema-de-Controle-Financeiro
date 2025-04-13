@@ -10,11 +10,11 @@ import lombok.Data;
 
 @Data
 public class MovimentacaoDTO {
-    private UUID uuid;
-    private LocalDate data;
-    private BigDecimal valor;
-    private String descricao;
-    private TipoMovimentacao tipo;
-    private UUID uuidConta; 
+	private UUID uuid;
+	private LocalDate data;
+	private BigDecimal valor;
+	private String descricao;
+	private TipoMovimentacao tipo;
+	private UUID uuidConta;
 
 }

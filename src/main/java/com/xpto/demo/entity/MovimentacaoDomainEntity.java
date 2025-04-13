@@ -25,41 +25,40 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "movimentacao")
 public class MovimentacaoDomainEntity {
-	
-	  @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    @Column(name = "id", updatable = false, nullable = false)
-    private Long id;
-	  
-	  @Column(nullable = false, updatable = false, unique = true)
-	    UUID uuid;
 
-    private LocalDate data;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false, nullable = false)
+	private Long id;
 
-    private BigDecimal valor;
-    
-    private String descricao;
-    
-    @Column(name = "data_exclusao")
-    private LocalDate dataExclusao;
+	@Column(nullable = false, updatable = false, unique = true)
+	UUID uuid;
 
-    @Enumerated(EnumType.STRING)
-    private TipoMovimentacao tipo;
+	private LocalDate data;
 
-    @ManyToOne
-    @JoinColumn(name = "conta_id", nullable = false)
-    private ContaDomainEntity conta;
-    
-    
-    public void excluir() {
-        this.dataExclusao = LocalDate.now(); 
-    }
+	private BigDecimal valor;
 
-    @PrePersist
-    @SuppressWarnings("unused")
-    private void initializeUUID() {
-      if (uuid == null) {
-        uuid = UUID.randomUUID();
-      }
-    }
+	private String descricao;
+
+	@Column(name = "data_exclusao")
+	private LocalDate dataExclusao;
+
+	@Enumerated(EnumType.STRING)
+	private TipoMovimentacao tipo;
+
+	@ManyToOne
+	@JoinColumn(name = "conta_id", nullable = false)
+	private ContaDomainEntity conta;
+
+	public void excluir() {
+		this.dataExclusao = LocalDate.now();
+	}
+
+	@PrePersist
+	@SuppressWarnings("unused")
+	private void initializeUUID() {
+		if (uuid == null) {
+			uuid = UUID.randomUUID();
+		}
+	}
 }

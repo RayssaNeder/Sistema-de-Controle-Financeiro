@@ -6,68 +6,62 @@ import org.modelmapper.PropertyMap;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-import com.xpto.demo.dto.MovimentacaoDTO;
-import com.xpto.demo.dto.MovivemtosByClienteDTO;
 import com.xpto.demo.dto.CreateMovimentacaoDTO;
+import com.xpto.demo.dto.MovimentacaoDTO;
 import com.xpto.demo.dto.PageMovimentacaoDTO;
 import com.xpto.demo.dto.UpdateMovimentacao;
 import com.xpto.demo.entity.MovimentacaoDomainEntity;
 
-
-
 @Component
 public class MovimentacaoMapper {
 
-	  private final ModelMapper modelMapper;
+	private final ModelMapper modelMapper;
 
-	  public MovimentacaoMapper(ModelMapper modelMapper) {
-		    this.modelMapper = modelMapper;
-		  }
-	  
-  public MovimentacaoDTO toModel(MovimentacaoDomainEntity entity) {
-    return modelMapper.map(entity, MovimentacaoDTO.class);
-  }
+	public MovimentacaoMapper(ModelMapper modelMapper) {
+		this.modelMapper = modelMapper;
+	}
 
-  public MovimentacaoDomainEntity toEntity(CreateMovimentacaoDTO createMovimentacao) {
-    ModelMapper modelMapper = new ModelMapper();
+	public MovimentacaoDTO toModel(MovimentacaoDomainEntity entity) {
+		return modelMapper.map(entity, MovimentacaoDTO.class);
+	}
 
-    PropertyMap<CreateMovimentacaoDTO, MovimentacaoDomainEntity> contaEntityMap =
-        new PropertyMap<CreateMovimentacaoDTO, MovimentacaoDomainEntity>() {
-          protected void configure() {
-            skip(destination.getId());
-            skip(destination.getUuid());
-            skip(destination.getConta());
-          }
-        };
-    modelMapper.addMappings(contaEntityMap);
+	public MovimentacaoDomainEntity toEntity(CreateMovimentacaoDTO createMovimentacao) {
+		ModelMapper modelMapper = new ModelMapper();
 
-    return modelMapper.map(createMovimentacao, MovimentacaoDomainEntity.class);
-  }
+		PropertyMap<CreateMovimentacaoDTO, MovimentacaoDomainEntity> contaEntityMap = new PropertyMap<CreateMovimentacaoDTO, MovimentacaoDomainEntity>() {
+			protected void configure() {
+				skip(destination.getId());
+				skip(destination.getUuid());
+				skip(destination.getConta());
+			}
+		};
+		modelMapper.addMappings(contaEntityMap);
 
-  public void intoEntity(UpdateMovimentacao updateMovimentacao, MovimentacaoDomainEntity contaEntity) {
-    ModelMapper modelMapper = new ModelMapper();
-    modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+		return modelMapper.map(createMovimentacao, MovimentacaoDomainEntity.class);
+	}
 
-    PropertyMap<UpdateMovimentacao, MovimentacaoDomainEntity> contaEntityMap =
-        new PropertyMap<UpdateMovimentacao, MovimentacaoDomainEntity>() {
-          protected void configure() {
-            skip(destination.getId());
-          }
-        };
-    modelMapper.addMappings(contaEntityMap);
+	public void intoEntity(UpdateMovimentacao updateMovimentacao, MovimentacaoDomainEntity contaEntity) {
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
 
-    modelMapper.map(updateMovimentacao, contaEntity);
-  }
+		PropertyMap<UpdateMovimentacao, MovimentacaoDomainEntity> contaEntityMap = new PropertyMap<UpdateMovimentacao, MovimentacaoDomainEntity>() {
+			protected void configure() {
+				skip(destination.getId());
+			}
+		};
+		modelMapper.addMappings(contaEntityMap);
 
-  public PageMovimentacaoDTO toPageModel(Page<MovimentacaoDTO> page) {
-	  PageMovimentacaoDTO pageMovimentacao = new PageMovimentacaoDTO();
-    pageMovimentacao.setPage(page.getNumber());
-    pageMovimentacao.setSize(page.getSize());
-    pageMovimentacao.setTotalElements(page.getTotalElements());
-    pageMovimentacao.setTotalPages(page.getTotalPages());
-    pageMovimentacao.setResults(page.getContent());
-    return pageMovimentacao;
-  }
-  
+		modelMapper.map(updateMovimentacao, contaEntity);
+	}
+
+	public PageMovimentacaoDTO toPageModel(Page<MovimentacaoDTO> page) {
+		PageMovimentacaoDTO pageMovimentacao = new PageMovimentacaoDTO();
+		pageMovimentacao.setPage(page.getNumber());
+		pageMovimentacao.setSize(page.getSize());
+		pageMovimentacao.setTotalElements(page.getTotalElements());
+		pageMovimentacao.setTotalPages(page.getTotalPages());
+		pageMovimentacao.setResults(page.getContent());
+		return pageMovimentacao;
+	}
 
 }

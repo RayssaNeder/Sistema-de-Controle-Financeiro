@@ -26,40 +26,27 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/cliente")
 public interface ClienteApi {
 
-  
-    @Operation(summary = "Obter cliente por UUID",
-               responses = {
-                   @ApiResponse(responseCode = "200", description = "Cliente encontrado",
-                                content = @Content(schema = @Schema(implementation = Cliente.class))),
-                   @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
-               })
-    @GetMapping("/{uuid}")
-    ResponseEntity<Cliente> readCliente(@PathVariable UUID uuid);
+	@Operation(summary = "Obter cliente por UUID", responses = {
+			@ApiResponse(responseCode = "200", description = "Cliente encontrado", content = @Content(schema = @Schema(implementation = Cliente.class))),
+			@ApiResponse(responseCode = "404", description = "Cliente não encontrado") })
+	@GetMapping("/{uuid}")
+	ResponseEntity<Cliente> readCliente(@PathVariable UUID uuid);
 
-    @Operation(summary = "Atualizar cliente existente",
-               responses = {
-                   @ApiResponse(responseCode = "200", description = "Cliente atualizado com sucesso",
-                                content = @Content(schema = @Schema(implementation = Cliente.class))),
-                   @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
-               })
-    @PutMapping("/{uuid}")
-    ResponseEntity<Cliente> updateCliente(@PathVariable UUID uuid, @RequestBody UpdateCliente updateCliente);
+	@Operation(summary = "Atualizar cliente existente", responses = {
+			@ApiResponse(responseCode = "200", description = "Cliente atualizado com sucesso", content = @Content(schema = @Schema(implementation = Cliente.class))),
+			@ApiResponse(responseCode = "404", description = "Cliente não encontrado") })
+	@PutMapping("/{uuid}")
+	ResponseEntity<Cliente> updateCliente(@PathVariable UUID uuid, @RequestBody UpdateCliente updateCliente);
 
-    @Operation(summary = "Deletar cliente por UUID",
-               responses = {
-                   @ApiResponse(responseCode = "204", description = "Cliente deletado com sucesso"),
-                   @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
-               })
-    @DeleteMapping("/{uuid}")
-    ResponseEntity<Void> deleteCliente(@PathVariable UUID uuid);
+	@Operation(summary = "Deletar cliente por UUID", responses = {
+			@ApiResponse(responseCode = "204", description = "Cliente deletado com sucesso"),
+			@ApiResponse(responseCode = "404", description = "Cliente não encontrado") })
+	@DeleteMapping("/{uuid}")
+	ResponseEntity<Void> deleteCliente(@PathVariable UUID uuid);
 
-    @Operation(summary = "Listar clientes com paginação",
-               responses = {
-                   @ApiResponse(responseCode = "200", description = "Lista de clientes retornada com sucesso",
-                                content = @Content(schema = @Schema(implementation = PageCliente.class)))
-               })
-    @GetMapping
-    ResponseEntity<PageCliente> listCliente(@RequestParam(defaultValue = "0") Integer page,
-                                            @RequestParam(defaultValue = "10") Integer size,
-                                            @RequestParam(required = false) List<String> sort);
+	@Operation(summary = "Listar clientes com paginação", responses = {
+			@ApiResponse(responseCode = "200", description = "Lista de clientes retornada com sucesso", content = @Content(schema = @Schema(implementation = PageCliente.class))) })
+	@GetMapping
+	ResponseEntity<PageCliente> listCliente(@RequestParam(defaultValue = "0") Integer page,
+			@RequestParam(defaultValue = "10") Integer size, @RequestParam(required = false) List<String> sort);
 }

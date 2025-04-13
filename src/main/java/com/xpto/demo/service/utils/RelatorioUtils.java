@@ -2,27 +2,39 @@ package com.xpto.demo.service.utils;
 
 import java.util.List;
 
-	public class RelatorioUtils {
+public class RelatorioUtils {
 
-	    public static <T> String gerarTextoRelatorio(List<T> relatorios) {
-	        StringBuilder sb = new StringBuilder();
-	        
-	        if (!relatorios.isEmpty() && relatorios.get(0) instanceof RelatorioComFormato) {
+	public static String gerarTextoRelatorio(Object relatorio) {
+	    StringBuilder sb = new StringBuilder();
+	    
+	    if (relatorio == null) {
+	        return "Nenhuma informação disponível.";
+	    }
+	    
+	    if (relatorio instanceof List<?> lista) {
+	        if (!lista.isEmpty() && lista.get(0) instanceof RelatorioComFormato) {
 	            sb.append("Relatório:\n");
-	            for (T dto : relatorios) {
-	                sb.append(((RelatorioComFormato) dto).formatarLinhaRelatorio()).append("\n");
+	            for (Object item : lista) {
+	                sb.append(((RelatorioComFormato) item).formatarLinhaRelatorio()).append("\n");
 	            }
 	        } else {
-	            sb.append("Nenhuma informação disponível.");
+	            sb.append("Nenhuma informação disponível na lista.");
 	        }
-
-	        return sb.toString();
+	    } 
+	    else if (relatorio instanceof RelatorioComFormato formato) {
+	        sb.append(formato.formatarLinhaRelatorio());
 	    }
-
-	    public interface RelatorioComFormato {
-	        String formatarLinhaRelatorio();
+	    else {
+	        sb.append("Tipo de relatório não suportado: ").append(relatorio.getClass().getSimpleName());
 	    }
+	    
+	    return sb.toString();
+	}
+
+	public interface RelatorioComFormato {
+	    String formatarLinhaRelatorio();
 	}
 
 
-
+	
+}

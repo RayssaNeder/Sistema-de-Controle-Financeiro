@@ -10,11 +10,9 @@ import lombok.Data;
 
 @Data
 public class MovivemtosByClienteDTO {
-	
-	
 
-    public MovivemtosByClienteDTO(LocalDate data,UUID conta, TipoMovimentacao tipo, BigDecimal valor, String descricao, UUID cliente,
-			String nome, String email, String telefone, String agencia, String numero, Boolean ativa) {
+	public MovivemtosByClienteDTO(LocalDate data, UUID conta, TipoMovimentacao tipo, BigDecimal valor, String descricao,
+			UUID cliente, String nome, String email, String telefone, String agencia, String numero, Boolean ativa) {
 		super();
 		this.data = data;
 		this.tipo = tipo;
@@ -29,16 +27,17 @@ public class MovivemtosByClienteDTO {
 		this.conta = conta;
 		this.cliente = cliente;
 	}
+
 	private LocalDate data;
 	private UUID conta;
-    private TipoMovimentacao tipo;
-    private BigDecimal valor;
-    private String descricao;
-    private UUID cliente;
-    private String nome;
-    private String email;
-    private String telefone;
-    private String agencia;
-    private String numero;
-    private Boolean ativa;
+	private TipoMovimentacao tipo;
+	private BigDecimal valor;
+	private String descricao;
+	private UUID cliente;
+	private String nome;
+	private String email;
+	private String telefone;
+	private String agencia;
+	private String numero;
+	private Boolean ativa;
 }

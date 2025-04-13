@@ -13,7 +13,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
@@ -33,9 +32,9 @@ public abstract class ClienteDomainEntity {
 	private String email;
 	private String telefone;
 	@Column(name = "data_cadastro")
-    private LocalDate dataCadastro;
-	 @Column(name = "data_exclusao")
-	    private LocalDate dataExclusao;
+	private LocalDate dataCadastro;
+	@Column(name = "data_exclusao")
+	private LocalDate dataExclusao;
 
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
 	protected List<ContaDomainEntity> contas = new ArrayList<>();
@@ -43,12 +42,10 @@ public abstract class ClienteDomainEntity {
 	@OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
 	private EnderecoDomainEntity endereco;
 
+	public void excluir() {
+		this.dataExclusao = LocalDate.now();
+	}
 
-		
-	 public void excluir() {
-	        this.dataExclusao = LocalDate.now(); 
-	    }
-	
 	@PrePersist
 	@SuppressWarnings("unused")
 	private void initializeUUID() {

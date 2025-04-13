@@ -19,116 +19,99 @@ import com.xpto.demo.repository.ClienteRepository;
 import com.xpto.demo.repository.EnderecoRepository;
 import com.xpto.demo.service.exception.ModelException;
 
-
-
 @Service
 @Transactional
 public class EnderecoServiceImpl implements EnderecoService {
-	
-	  private EnderecoRepository enderecoRepository;
-	  private ClienteRepository clienteRepository;
 
-	  private EnderecoMapper enderecoMapper;
-	  
-	  public EnderecoServiceImpl( ClienteRepository clienteRepository, EnderecoRepository enderecoRepository, EnderecoMapper enderecoMapper) {
-		  	this.clienteRepository = clienteRepository;
-		    this.enderecoRepository = enderecoRepository;
-		    this.enderecoMapper = enderecoMapper;
-		  }
+	private EnderecoRepository enderecoRepository;
+	private ClienteRepository clienteRepository;
 
+	private EnderecoMapper enderecoMapper;
 
-	  @Transactional
-	  @Override
-	  public EnderecoDTO create(CreateEndereco createEndereco) {
-	      var cliente = clienteRepository
-	          .findByUuid(createEndereco.getUuidCliente())
-	          .orElseThrow(() -> new ModelException(ClienteService.NOT_FOUND));
+	public EnderecoServiceImpl(ClienteRepository clienteRepository, EnderecoRepository enderecoRepository,
+			EnderecoMapper enderecoMapper) {
+		this.clienteRepository = clienteRepository;
+		this.enderecoRepository = enderecoRepository;
+		this.enderecoMapper = enderecoMapper;
+	}
 
-	      if (cliente.getEndereco() != null) {
-	    	    var enderecoAntigo = cliente.getEndereco();
+	@Transactional
+	@Override
+	public EnderecoDTO create(CreateEndereco createEndereco) {
+		var cliente = clienteRepository.findByUuid(createEndereco.getUuidCliente())
+				.orElseThrow(() -> new ModelException(ClienteService.NOT_FOUND));
 
-	    	    cliente.setEndereco(null);
-	    	    clienteRepository.save(cliente);
+		if (cliente.getEndereco() != null) {
+			var enderecoAntigo = cliente.getEndereco();
 
-	    	    enderecoRepository.delete(enderecoAntigo); 
-	    	    enderecoRepository.flush();
-	    	}
+			cliente.setEndereco(null);
+			clienteRepository.save(cliente);
 
+			enderecoRepository.delete(enderecoAntigo);
+			enderecoRepository.flush();
+		}
 
+		var enderecoEntity = enderecoMapper.toEntity(createEndereco);
+		enderecoEntity.setCliente(cliente);
 
-	      var enderecoEntity = enderecoMapper.toEntity(createEndereco);
-	      enderecoEntity.setCliente(cliente);
+		enderecoEntity = enderecoRepository.save(enderecoEntity);
 
-	      enderecoEntity = enderecoRepository.save(enderecoEntity);
+		cliente.setEndereco(enderecoEntity);
+		clienteRepository.save(cliente);
 
-	      cliente.setEndereco(enderecoEntity);
-	      clienteRepository.save(cliente);
-
-	      return enderecoMapper.toModel(enderecoEntity);
-	  }
+		return enderecoMapper.toModel(enderecoEntity);
+	}
 
 	@Override
 	public EnderecoDTO read(UUID uuid) {
-		var enderecoEntity =
-		        enderecoRepository
-		            .findByUuid(uuid)
-		            .orElseThrow(
-		                () -> new ModelException(EnderecoService.NOT_FOUND));
+		var enderecoEntity = enderecoRepository.findByUuid(uuid)
+				.orElseThrow(() -> new ModelException(EnderecoService.NOT_FOUND));
 
-		    return enderecoMapper.toModel(enderecoEntity);
+		return enderecoMapper.toModel(enderecoEntity);
 	}
 
-	
 	@Override
 	public void delete(UUID uuid) {
 		enderecoRepository.findByUuid(uuid).orElseThrow(() -> new ModelException(NOT_FOUND));
 
 		enderecoRepository.deleteByUuid(uuid);
-		
-	}
 
+	}
 
 	@Override
 	public PageEnderecoDTO list(Integer page, Integer size, List<String> sortParams) {
-		  if (page == null) page = 0;
-		    if (size == null) size = 10;
+		if (page == null)
+			page = 0;
+		if (size == null)
+			size = 10;
 
-		    Sort sort = Sort.unsorted();
+		Sort sort = Sort.unsorted();
 
-		    if (sortParams != null && !sortParams.isEmpty()) {
-		        List<Sort.Order> orders = sortParams.stream()
-		            .map(param -> {
-		                if (param.startsWith("-")) {
-		                    return new Sort.Order(Sort.Direction.DESC, param.substring(1));
-		                } else {
-		                    return new Sort.Order(Sort.Direction.ASC, param);
-		                }
-		            })
-		            .toList();
+		if (sortParams != null && !sortParams.isEmpty()) {
+			List<Sort.Order> orders = sortParams.stream().map(param -> {
+				if (param.startsWith("-")) {
+					return new Sort.Order(Sort.Direction.DESC, param.substring(1));
+				} else {
+					return new Sort.Order(Sort.Direction.ASC, param);
+				}
+			}).toList();
 
-		        sort = Sort.by(orders);
-		    }
-
-		    Pageable pageable = PageRequest.of(page, size, sort);
-		    Page<EnderecoDomainEntity> pageResult = enderecoRepository.findAll(pageable);
-
-		    Page<EnderecoDTO> clientesPage = pageResult.map(enderecoMapper::toModel);
-
-		    return enderecoMapper.toPageModel(clientesPage);
+			sort = Sort.by(orders);
 		}
 
+		Pageable pageable = PageRequest.of(page, size, sort);
+		Page<EnderecoDomainEntity> pageResult = enderecoRepository.findAll(pageable);
+
+		Page<EnderecoDTO> clientesPage = pageResult.map(enderecoMapper::toModel);
+
+		return enderecoMapper.toPageModel(clientesPage);
+	}
 
 	@Override
 	public List<EnderecoDTO> getAllEnderecosByCliente(UUID uuidCliente) {
-		  var enderecos = enderecoRepository.findAllEnderecoByCliente(uuidCliente );
+		var enderecos = enderecoRepository.findAllEnderecoByCliente(uuidCliente);
 
-		    return enderecos;
+		return enderecos;
 	}
-
-
-
-
-
-	
 
 }

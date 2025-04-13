@@ -8,6 +8,5 @@ import lombok.Data;
 @Entity
 @Table(name = "cliente_pessoa_fisica")
 public class ClientePessoaFisicaDomainEntity extends ClienteDomainEntity {
-    private String cpf;
+	private String cpf;
 }
-

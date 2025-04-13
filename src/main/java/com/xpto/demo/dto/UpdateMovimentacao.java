@@ -9,10 +9,10 @@ import lombok.Data;
 
 @Data
 public class UpdateMovimentacao {
-	
-	  private UUID nomeCliente;
-	    private UUID conta;
-	    private BigDecimal valor;
-	    private TipoMovimentacao tipo; 
+
+	private UUID nomeCliente;
+	private UUID conta;
+	private BigDecimal valor;
+	private TipoMovimentacao tipo;
 
 }

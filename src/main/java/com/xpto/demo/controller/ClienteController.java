@@ -24,51 +24,47 @@ import com.xpto.demo.dto.UpdateCliente;
 import com.xpto.demo.service.ClienteService;
 import com.xpto.demo.swagger.ClienteApi;
 
-
-
 @RestController
 @RequestMapping("/cliente")
-public class ClienteController implements ClienteApi{
+public class ClienteController implements ClienteApi {
 	private final ClienteService clienteService;
 
-	  public ClienteController(ClienteService clienteService) {
-	    this.clienteService = clienteService;
-	  }
-
-	 @PostMapping("/pessoa-fisica/novo")
-	  @ResponseStatus(HttpStatus.CREATED)
-	  public ResponseEntity<Cliente> createCliente(@RequestBody CreateClientePessoaFisicaDTO createcliente) {
-	    return new ResponseEntity<>(clienteService.create(createcliente), HttpStatus.CREATED);
-	  }
-	 
-	 @PostMapping("/pessoa-juridica/novo")
-	  @ResponseStatus(HttpStatus.CREATED)
-	  public ResponseEntity<Cliente> createCliente(@RequestBody CreateClientePessoaJuridicaDTO createcliente) {
-	    return new ResponseEntity<>(clienteService.create(createcliente), HttpStatus.CREATED);
-	  }
-
-	    @GetMapping("/{uuid}")
-	  public ResponseEntity<Cliente> readCliente(@PathVariable UUID uuid) {
-	    return new ResponseEntity<>(clienteService.read(uuid), HttpStatus.OK);
-	  }
-
-	  @PutMapping("/{uuid}")
-	  public ResponseEntity<Cliente> updateCliente(@PathVariable UUID uuid, @RequestBody UpdateCliente updatecliente) {
-	    return new ResponseEntity<>(clienteService.update(uuid, updatecliente), HttpStatus.OK);
-	  }
-
-	  @DeleteMapping("/{uuid}")
-	  public ResponseEntity<Void> deleteCliente(@PathVariable UUID uuid) {
-	    clienteService.delete(uuid);
-	    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	  }
-
-	    @GetMapping
-	  public ResponseEntity<PageCliente> listCliente(
-			  @RequestParam(defaultValue = "0") Integer page,
-			    @RequestParam(defaultValue = "10") Integer size,
-			    @RequestParam(required = false) List<String> sort) {
-	    return new ResponseEntity<>(clienteService.list(page, size, sort), HttpStatus.OK);
-	  }
-
+	public ClienteController(ClienteService clienteService) {
+		this.clienteService = clienteService;
 	}
+
+	@PostMapping("/pessoa-fisica/novo")
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<Cliente> createCliente(@RequestBody CreateClientePessoaFisicaDTO createcliente) {
+		return new ResponseEntity<>(clienteService.create(createcliente), HttpStatus.CREATED);
+	}
+
+	@PostMapping("/pessoa-juridica/novo")
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<Cliente> createCliente(@RequestBody CreateClientePessoaJuridicaDTO createcliente) {
+		return new ResponseEntity<>(clienteService.create(createcliente), HttpStatus.CREATED);
+	}
+
+	@GetMapping("/{uuid}")
+	public ResponseEntity<Cliente> readCliente(@PathVariable UUID uuid) {
+		return new ResponseEntity<>(clienteService.read(uuid), HttpStatus.OK);
+	}
+
+	@PutMapping("/{uuid}")
+	public ResponseEntity<Cliente> updateCliente(@PathVariable UUID uuid, @RequestBody UpdateCliente updatecliente) {
+		return new ResponseEntity<>(clienteService.update(uuid, updatecliente), HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{uuid}")
+	public ResponseEntity<Void> deleteCliente(@PathVariable UUID uuid) {
+		clienteService.delete(uuid);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@GetMapping
+	public ResponseEntity<PageCliente> listCliente(@RequestParam(defaultValue = "0") Integer page,
+			@RequestParam(defaultValue = "10") Integer size, @RequestParam(required = false) List<String> sort) {
+		return new ResponseEntity<>(clienteService.list(page, size, sort), HttpStatus.OK);
+	}
+
+}

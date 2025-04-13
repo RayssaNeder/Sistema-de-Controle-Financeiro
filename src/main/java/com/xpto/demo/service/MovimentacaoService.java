@@ -14,21 +14,20 @@ import com.xpto.demo.entity.ContaDomainEntity;
 import com.xpto.demo.service.error.Error;
 
 public interface MovimentacaoService {
-	
-	final Error NOT_FOUND =
-		      new Error().code(HttpStatus.NOT_FOUND.value()).message("Movimentacao não encontrada");
-	
-	  public  MovimentacaoDTO create(CreateMovimentacaoDTO createMovimentacao);
 
-	  public MovimentacaoDTO read(UUID id);
+	final Error NOT_FOUND = new Error().code(HttpStatus.NOT_FOUND.value()).message("Movimentacao não encontrada");
 
-	  public MovimentacaoDTO update(UUID id, UpdateMovimentacao updateMovimentacao);
+	public MovimentacaoDTO create(CreateMovimentacaoDTO createMovimentacao);
 
-	  public void delete(UUID id);
+	public MovimentacaoDTO read(UUID id);
 
-	  public PageMovimentacaoDTO list(Integer page, Integer size, List<String> sort);
-	  
-	 public MovimentacaoDTO createMovimentacaoInicial(ContaDomainEntity conta);
+	public MovimentacaoDTO update(UUID id, UpdateMovimentacao updateMovimentacao);
+
+	public void delete(UUID id);
+
+	public PageMovimentacaoDTO list(Integer page, Integer size, List<String> sort);
+
+	public MovimentacaoDTO createMovimentacaoInicial(ContaDomainEntity conta);
 
 	public List<MovivemtosByClienteDTO> getAllMovimentacoesByCliente(UUID uuidCliente);
 

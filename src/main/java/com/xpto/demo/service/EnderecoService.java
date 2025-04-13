@@ -7,25 +7,21 @@ import org.springframework.http.HttpStatus;
 
 import com.xpto.demo.dto.CreateEndereco;
 import com.xpto.demo.dto.EnderecoDTO;
-import com.xpto.demo.dto.MovivemtosByClienteDTO;
 import com.xpto.demo.dto.PageEnderecoDTO;
 import com.xpto.demo.service.error.Error;
 
 public interface EnderecoService {
-	
-	final Error NOT_FOUND =
-		      new Error().code(HttpStatus.NOT_FOUND.value()).message("Endereco não encontrado");
 
-		public EnderecoDTO create(CreateEndereco createEndereco) ;
+	final Error NOT_FOUND = new Error().code(HttpStatus.NOT_FOUND.value()).message("Endereco não encontrado");
 
-		public EnderecoDTO read(UUID uuid);
+	public EnderecoDTO create(CreateEndereco createEndereco);
 
-		public void delete(UUID uuid);
+	public EnderecoDTO read(UUID uuid);
 
-		public PageEnderecoDTO list(Integer page, Integer size, List<String> sortParams);
+	public void delete(UUID uuid);
 
-		public List<EnderecoDTO> getAllEnderecosByCliente(UUID uuidCliente);
+	public PageEnderecoDTO list(Integer page, Integer size, List<String> sortParams);
 
-	
+	public List<EnderecoDTO> getAllEnderecosByCliente(UUID uuidCliente);
 
 }

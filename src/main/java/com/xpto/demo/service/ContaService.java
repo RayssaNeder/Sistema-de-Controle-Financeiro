@@ -14,21 +14,19 @@ import com.xpto.demo.entity.ContaDomainEntity;
 import com.xpto.demo.service.error.Error;
 
 public interface ContaService {
-	
-	final Error NOT_FOUND =
-		      new Error().code(HttpStatus.NOT_FOUND.value()).message("Conta não encontrada");
 
-		public ContaDTO create(CreateContaDTO createConta) ;
+	final Error NOT_FOUND = new Error().code(HttpStatus.NOT_FOUND.value()).message("Conta não encontrada");
 
-		public ContaDTO read(UUID uuid);
-		public ContaDTO update(UUID uuid, UpdateConta updateConta);
+	public ContaDTO create(CreateContaDTO createConta);
 
-		public void delete(UUID uuid);
+	public ContaDTO read(UUID uuid);
 
-		public PageConta list(Integer page, Integer size, List<String> sortParams);
+	public ContaDTO update(UUID uuid, UpdateConta updateConta);
 
+	public void delete(UUID uuid);
 
-		public ContaDomainEntity createContaInicial(ClienteDomainEntity clienteEntity, String agencia);
-	
+	public PageConta list(Integer page, Integer size, List<String> sortParams);
+
+	public ContaDomainEntity createContaInicial(ClienteDomainEntity clienteEntity, String agencia);
 
 }

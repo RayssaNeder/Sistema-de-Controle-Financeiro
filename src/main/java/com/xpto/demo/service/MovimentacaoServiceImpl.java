@@ -34,8 +34,8 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 
 	private MovimentacaoMapper movimentacaoMapper;
 
-	public MovimentacaoServiceImpl(MovimentacaoRepository movimentacaoRepository,
-			MovimentacaoMapper movimentacaoMapper, ContaRepository contaRepository) {
+	public MovimentacaoServiceImpl(MovimentacaoRepository movimentacaoRepository, MovimentacaoMapper movimentacaoMapper,
+			ContaRepository contaRepository) {
 		this.movimentacaoRepository = movimentacaoRepository;
 		this.movimentacaoMapper = movimentacaoMapper;
 		this.contaRepository = contaRepository;
@@ -43,17 +43,15 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 
 	@Override
 	public MovimentacaoDTO create(CreateMovimentacaoDTO createMovimentacao) {
-		
-		var conta =
-		        contaRepository
-		            .findByUuid(createMovimentacao.getUuidConta())
-		            .orElseThrow(() -> new ModelException(ContaService.NOT_FOUND));
-		
+
+		var conta = contaRepository.findByUuid(createMovimentacao.getUuidConta())
+				.orElseThrow(() -> new ModelException(ContaService.NOT_FOUND));
+
 		MovimentacaoDomainEntity movimentacaoEntity = null;
 
 		movimentacaoEntity = movimentacaoMapper.toEntity(createMovimentacao);
-	    movimentacaoEntity.setConta(conta);
-	    movimentacaoEntity.setData(LocalDate.now());
+		movimentacaoEntity.setConta(conta);
+		movimentacaoEntity.setData(LocalDate.now());
 		movimentacaoEntity = movimentacaoRepository.save(movimentacaoEntity);
 
 		return movimentacaoMapper.toModel(movimentacaoEntity);
@@ -69,7 +67,6 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 
 	}
 
-
 	@Override
 	public MovimentacaoDTO update(UUID uuid, UpdateMovimentacao updateMovimentacao) {
 		var movimentacaoEntity = movimentacaoRepository.findByUuid(uuid)
@@ -82,19 +79,15 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 
 	}
 
-
 	@Override
 	public void delete(UUID uuid) {
-		var movimentacao =
-				movimentacaoRepository
-		            .findByUuid(uuid)
-		            .orElseThrow(() -> new ModelException(MovimentacaoService.NOT_FOUND));
+		var movimentacao = movimentacaoRepository.findByUuid(uuid)
+				.orElseThrow(() -> new ModelException(MovimentacaoService.NOT_FOUND));
 
-		movimentacao.excluir(); 
+		movimentacao.excluir();
 
-		        movimentacaoRepository.save(movimentacao); 
+		movimentacaoRepository.save(movimentacao);
 
-		
 	}
 
 	@Override
@@ -128,7 +121,7 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 
 	@Override
 	public MovimentacaoDTO createMovimentacaoInicial(ContaDomainEntity conta) {
-		
+
 		MovimentacaoDomainEntity movimentacaoInicial = new MovimentacaoDomainEntity();
 		movimentacaoInicial.setConta(conta);
 		movimentacaoInicial.setTipo(TipoMovimentacao.CREDITO);
@@ -137,18 +130,17 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 		movimentacaoInicial.setData(LocalDate.now());
 
 		movimentacaoRepository.save(movimentacaoInicial);
-		
+
 		return movimentacaoMapper.toModel(movimentacaoInicial);
 
-		
 	}
 
 	@Override
 	public List<MovivemtosByClienteDTO> getAllMovimentacoesByCliente(UUID uuidCliente) {
 
-	    var movimentacoes = movimentacaoRepository.findAllMovimentacaoByCliente(uuidCliente );
+		var movimentacoes = movimentacaoRepository.findAllMovimentacaoByCliente(uuidCliente);
 
-	    return movimentacoes;
+		return movimentacoes;
 	}
 
 }
