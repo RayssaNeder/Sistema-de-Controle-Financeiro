@@ -44,11 +44,13 @@ A aplicação permite:
 
 2. Configure o banco de dados Oracle e atualize as credenciais no `application.properties`.
 
-3. Execute a aplicação:
+3. Build a aplicação:
+	`./gradlew clean build --refresh-dependencies `
+4. Execute a aplicação:
 		`./gradlew bootRun `
-4. Execute a procedure prc_integracao_dados.sql para realizar a inegração dos clientes na base de dados ou adicionar manualmente via metodos de crud de cliente, endereço, conta e movimentacao
+5. Execute a procedure prc_integracao_dados.sql para realizar a inegração dos clientes na base de dados ou adicionar manualmente via metodos de crud de cliente, endereço, conta e movimentacao
 
-5. Acesse a documentação  Swagger da API em:
+6. Acesse a documentação  Swagger da API em:
  `http://localhost:8080/swagger-ui/index.html#/`
   
  ##  Relatórios
